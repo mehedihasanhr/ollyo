@@ -1,35 +1,60 @@
-import { useState  } from 'react';
-import type { ImageType } from '../App';
-import GalleryItem from './GalleryItem';
+import React from 'react'
+import { ImageType } from '../App'
+import MoveAbleItem from './MoveAbleItem'
+import GalleryItem from './GalleryItem'
+import update from 'immutability-helper'
 
-type Props = {
-    images: ImageType[];
-}
+const Gallery = ({ images }: { images: ImageType[] }) => {
+    const [ items, setItems ] = React.useState(images)
+    const [ requestedFrame, setRequestedFrame ] = React.useState(false)
 
-// drag and drop able gallery with framer motion and react dnd smooth drag and drop
+    const moveItem = (dragIndex: number, hoverIndex: number) => {
+        const dragItem = items[dragIndex]
+        const hoverItem = items[hoverIndex]
 
-const Gallery = ({images}: Props) => {
-    const [galleryItems, setGalleryItems] = useState<ImageType[]>(images);
-   
+        setItems(update(items, {
+            $splice: [
+                [dragIndex, 1, hoverItem],
+                [hoverIndex, 1, dragItem]
+            ]
+        }))
 
-    const update = (dragIndex: number, hoverIndex: number) => {
-        const dragItem = galleryItems[dragIndex];
-        setGalleryItems(prevState => {
-            const coppiedState = [...prevState];
-            coppiedState.splice(dragIndex, 1);
-            coppiedState.splice(hoverIndex, 0, dragItem);
-            return coppiedState;
-        })
+        scheduleFrame()
+
     }
 
+    const scheduleFrame = () => {
+        if(!requestedFrame){
+            requestAnimationFrame(drawFrame)
+            setRequestedFrame(true)
+        }
+    }
+
+    React.useEffect(() => {
+        return () => {
+            if(requestedFrame){
+                cancelAnimationFrame(requestedFrame)
+            }
+        }
+    })
+
+
+    const drawFrame = () => {
+         setRequestedFrame(false)
+    }
+
+    
+ 
 
     return(
-        <div className="gallery"> 
-           <div className='gallery__body'>
-                {galleryItems.map((image: ImageType, index: number) => (
-                   <GalleryItem key={image.id} image={image} index={index} update={update}/> 
-                ))}
-            </div> 
+        <div className='gallery'>
+            <div className="gallery__body">
+            {items.map((image, index) => (
+               <MoveAbleItem key={image.id} index={index} item={image} id={image.id} moveItem={moveItem}>
+                    <GalleryItem image={image} onImageClick={() => ''}/>
+               </MoveAbleItem>
+            ))}
+            </div>
         </div>
     )
 }
