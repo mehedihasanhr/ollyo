@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { ImageType } from '../App';
-import { m, motion } from 'framer-motion';
+import {  motion } from 'framer-motion';
 
 type MoveAbleItemProps = {
     id: number;

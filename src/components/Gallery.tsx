@@ -35,7 +35,7 @@ const Gallery = ({ images }: { images: ImageType[] }) => {
 
 
     // handle files upload
-    const handleUploadFiles = (preview: string[], files: FileList) => {
+    const handleUploadFiles = (_preview: string[], files: FileList) => {
         const newItems = [...items] as ImageType[];
         for(let i = 0; i < files.length; i++) {
             const file = files[i];

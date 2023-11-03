@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useDragLayer } from 'react-dnd'
-import React from 'react'
+
 
 export const DragItemLayer = ({dropItem}: {dropItem: {[key: string]: any}}) => {
   
@@ -15,7 +15,6 @@ export const DragItemLayer = ({dropItem}: {dropItem: {[key: string]: any}}) => {
   if(!isDragging) return null;
   if(currentOffset === null) return null;
 
-  const dragItemRef = item?.ref;
   const width = dropItem?.ref?.current?.offsetWidth;
   const height = dropItem?.ref?.current?.offsetHeight; 
 
