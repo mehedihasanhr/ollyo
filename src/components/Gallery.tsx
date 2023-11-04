@@ -81,6 +81,8 @@ const Gallery = ({ images }: { images: ImageType[] }) => {
         }
          
         setItems(newGalleryItems); // update state
+        // clear selected items
+        setSelectedItems([]);
     }
 
     const lengthOfSelectedImages = selectedItems.length; // length of selected images
